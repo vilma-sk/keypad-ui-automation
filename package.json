@@ -1,0 +1,24 @@
+{
+  "name": "keypad",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "setup": "npm install && npx playwright install",
+    "test": "npx playwright test",
+    "test:smoke": "npx playwright test --grep @Smoke",
+    "test:regression": "npx playwright test --grep @Regression",
+    "test:headed": "npx playwright test --headed",
+    "test:debug:smoke": "npx playwright test --debug --project=smoke-chromium --timeout=0",
+    "test:debug:regression": "npx playwright test --debug --project=regression-chromium --timeout=0",
+    "report": "npx playwright show-report"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@playwright/test": "^1.59.1",
+    "@types/node": "^25.6.0"
+  }
+}

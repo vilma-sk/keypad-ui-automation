@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keypad</title>
+    <style>
+        #keypad {
+            display: inline-block;
+            width: 150px;
+            min-height: 150px;
+        }
+
+        #keypad * {
+            float: left;
+            background-color: #ccc;
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            line-height: 50px;
+            cursor: pointer;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        #keypad *:nth-child(odd) {
+            background-color: #2563eb;
+        }
+
+        #keypad *:hover {
+            background-color: #333333;
+            color: #ffffff;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="keypad"></div>
+    <br><br>
+    <span>To do: </span><input type="text" id="todo" readonly>
+    <br><br>
+    <span>Input: </span><input type="text" id="input" readonly>
+    <input type="button" id="submit" value="Click">
+    <br><br>
+    <div id='output'></div>
+    <script>
+        let todoF = document.getElementById("todo");
+        let inputF = document.getElementById("input");
+        let keypad = document.getElementById("keypad");
+
+        function newTodo() {
+            let number = "";
+            for (let i = 0; i < 5; i++) {
+                number += Math.floor(Math.random() * 10);
+            }
+            todoF.value = number;
+            inputF.value = "";
+        }
+
+        function checkNumericAttr(e) {
+            for (let i = 0; i < 10; i++) {
+                if (e.target.getAttribute(i) != null) {
+                    return i;
+                }
+            }
+            return null;
+        }
+
+        function renderKeypad() {
+            let keys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "#", "0", "del"];
+            keys.forEach((key) => {
+                keypad.innerHTML += `<div id='button-${key}'>${key}</div>`;
+            });
+
+            let btns = document.querySelectorAll("#keypad *");
+
+            document.getElementById("submit").addEventListener("click", (e) => {
+                let out = document.getElementById("output");
+                if (inputF.value == todoF.value) {
+                    out.innerHTML = "<p style='color:green' id='msg'>Correct!</p>";
+                } else {
+                    out.innerHTML = "<p style='color:red' id='msg'>Incorrect</p>";
+                }
+                newTodo();
+            });
+
+            btns.forEach((e1) => {
+                e1.addEventListener("click", (e2) => {
+                    let numAttr = checkNumericAttr(e2);
+                    if (e2.target.innerHTML == "del" || e2.target.innerHTML == "#") {
+                        if (e2.target.innerHTML == "del") {
+                            try {
+                                inputF.value = inputF.value.substring(0, inputF.value.length - 1);
+                            } catch (error) {
+                                //skip
+                            }
+                        }
+                    } else {
+                        inputF.value += e2.target.innerHTML;
+                    }
+                });
+            });
+        }
+
+        renderKeypad();
+        newTodo();
+
+    </script>
+</body>
+
+</html>
