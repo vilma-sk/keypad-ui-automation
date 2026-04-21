@@ -65,7 +65,7 @@ test.describe('Positive UI', () => {
 
         await test.step('Enter all keypad digits in sequence', async () => {
             for (const [index, digit] of ALL_KEYPAD_DIGITS.entries()) {
-                await keypadPage.pressDigit(digit);
+                await keypadPage.pressKey(digit);
 
                 const current = ALL_KEYPAD_DIGITS.slice(0, index + 1).join('');
                 await expect(keypadPage.inputField).toHaveValue(current);
@@ -96,7 +96,7 @@ test.describe('Behavior', () => {
         const todoValue = await keypadPage.getTodoValue();
         const firstDigit = todoValue[0];
 
-        await keypadPage.pressDigit(firstDigit);
+        await keypadPage.pressKey(firstDigit);
         await expect(keypadPage.inputField).toHaveValue(firstDigit);
 
         await keypadPage.deleteDigit();
@@ -164,7 +164,7 @@ test.describe('Behavior', () => {
             await keypadPage.pressHash();
             await expect(keypadPage.inputField).toHaveValue(firstTodoValue.slice(0, -1));
 
-            await keypadPage.pressDigit(lastDigit);
+            await keypadPage.pressKey(lastDigit);
             await expect(keypadPage.inputField).toHaveValue(firstTodoValue);
         });
 
@@ -295,7 +295,7 @@ async function submitAndValidateResult(
     await expect(keypadPage.inputField).toHaveValue('');
 
     const regeneratedTodoValue = await keypadPage.getTodoValue();
-    expect(regeneratedTodoValue.length).toBe(initialTodoValue.length);
+    expect(regeneratedTodoValue).toHaveLength(initialTodoValue.length);
     expect.soft(regeneratedTodoValue).not.toBe(initialTodoValue);
 
     return regeneratedTodoValue;

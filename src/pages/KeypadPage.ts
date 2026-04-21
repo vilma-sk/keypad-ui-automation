@@ -7,8 +7,6 @@ export class KeypadPage {
     readonly inputField: Locator;
     readonly message: Locator;
     readonly keypadKeys: Locator;
-    readonly deleteButton: Locator;
-    readonly hashButton: Locator;
 
     constructor(page: Page) {
         this.page = page;
@@ -17,38 +15,36 @@ export class KeypadPage {
         this.inputField = page.locator('#input');
         this.message = page.locator('#msg');
         this.keypadKeys = page.locator('#keypad > div');
-        this.deleteButton = page.locator('#button-del');
-        this.hashButton = page.locator('#button-\\#');
-    }
-
-    async getTodoValue(): Promise<string> {
-        return this.todoField.inputValue();
     }
 
     async open(fileUrl: string): Promise<void> {
         await this.page.goto(fileUrl);
     }
 
-    async pressDigit(digit: string): Promise<void> {
-        await this.getKeyButton(digit).click();
+    async getTodoValue(): Promise<string> {
+        return this.todoField.inputValue();
     }
 
     getKeyButton(key: string): Locator {
         return this.page.locator(`[id="button-${key}"]`);
     }
 
+    async pressKey(digit: string): Promise<void> {
+        await this.getKeyButton(digit).click();
+    }
+
     async pressDigits(value: string): Promise<void> {
         for (const digit of value) {
-            await this.pressDigit(digit);
+            await this.pressKey(digit);
         }
     }
 
     async deleteDigit(): Promise<void> {
-        await this.deleteButton.click();
+        await this.pressKey('del');
     }
 
     async pressHash(): Promise<void> {
-        await this.hashButton.click();
+        await this.pressKey('#');
     }
 
     async submit(): Promise<void> {
@@ -70,10 +66,6 @@ export class KeypadPage {
 
     async getMessageColor(): Promise<string> {
         return this.message.evaluate((el) => getComputedStyle(el).color);
-    }
-
-    async getInputValue(): Promise<string> {
-        return this.inputField.inputValue();
     }
 
     async getFieldLabel(locator: Locator): Promise<string> {
