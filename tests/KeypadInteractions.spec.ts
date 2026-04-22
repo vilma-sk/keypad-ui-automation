@@ -86,7 +86,7 @@ test.describe('Behavior', () => {
         const todoValue = await keypadPage.getTodoValue();
 
         await keypadPage.deleteDigit();
-        await expect(keypadPage.inputField).toHaveValue('');
+        await expect(keypadPage.inputField).toBeEmpty();
         await expectNoMessage(keypadPage);
 
         await submitAndValidateResult(keypadPage, todoValue, INCORRECT);
@@ -100,7 +100,7 @@ test.describe('Behavior', () => {
         await expect(keypadPage.inputField).toHaveValue(firstDigit);
 
         await keypadPage.deleteDigit();
-        await expect(keypadPage.inputField).toHaveValue('');
+        await expect(keypadPage.inputField).toBeEmpty();
 
         await submitAndValidateResult(keypadPage, todoValue, INCORRECT);
     });
@@ -114,7 +114,7 @@ test.describe('Behavior', () => {
             await keypadPage.deleteDigit();
         }
 
-        await expect(keypadPage.inputField).toHaveValue('');
+        await expect(keypadPage.inputField).toBeEmpty();
         await keypadPage.deleteDigit();
 
         await submitAndValidateResult(keypadPage, todoValue, INCORRECT);
@@ -136,7 +136,7 @@ test.describe('Behavior', () => {
         const todoValue = await keypadPage.getTodoValue();
 
         await keypadPage.pressHash();
-        await expect(keypadPage.inputField).toHaveValue('');
+        await expect(keypadPage.inputField).toBeEmpty();
         await expectNoMessage(keypadPage);
 
         await submitAndValidateResult(keypadPage, todoValue, INCORRECT);
@@ -292,7 +292,7 @@ async function submitAndValidateResult(
     const message = await keypadPage.getMessageText();
     expect(message).toBe(expectedMessage);
 
-    await expect(keypadPage.inputField).toHaveValue('');
+    await expect(keypadPage.inputField).toBeEmpty();
 
     const regeneratedTodoValue = await keypadPage.getTodoValue();
     expect(regeneratedTodoValue).toHaveLength(initialTodoValue.length);
